@@ -18,6 +18,8 @@ public class GravController : MonoBehaviour
 	private static Vector3 planeNormal = new Vector3(0, 1, 0);
 	
 	private Vector3 prevVelocity;
+	
+	public AudioSource rotatorSfx;
 
 	void Start()
 	{
@@ -30,6 +32,8 @@ public class GravController : MonoBehaviour
 		//plane, and crossing it with the plane normal
 		if(Input.GetKeyDown(KeyCode.Q)) 
 		{
+			rotatorSfx.Play();
+		
 			Vector3 projForward = projectVectorOntoPlane(planeNormal, transform.forward);
 			Vector3 dir = Vector3.Cross(planeNormal, (projForward.normalized));
 			rotateGravToDirection(transform.localPosition, dir);
@@ -38,6 +42,8 @@ public class GravController : MonoBehaviour
 		//rotate gravity to the right
 		if(Input.GetKeyDown(KeyCode.E))
 		{
+			rotatorSfx.Play();
+			
 			Vector3 projForward = projectVectorOntoPlane(planeNormal, transform.forward);
 			Vector3 dir = Vector3.Cross(planeNormal, (projForward.normalized) * -1);
 			rotateGravToDirection(transform.localPosition, dir);
