@@ -59,7 +59,6 @@ public class MoveController : MonoBehaviour
 		{
 			Time.timeScale = 1;
 			Time.fixedDeltaTime = 0.02f;
-			footsteps.pitch = 1.25f;
 			Application.LoadLevel(0);
 		}
 	}

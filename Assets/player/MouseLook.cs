@@ -68,8 +68,6 @@ public class MouseLook : MonoBehaviour {
 		//fire a ray when you click and check to see if it hits a GravCube
 		if(Input.GetMouseButtonDown(0))
 		{
-			audio.Play();
-		
 			Transform camera = Camera.allCameras[0].transform;
 			Ray ray = new Ray(camera.position, camera.forward);
 			RaycastHit hit = new RaycastHit();

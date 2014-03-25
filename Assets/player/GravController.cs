@@ -43,14 +43,10 @@ public class GravController : MonoBehaviour
 			rotateGravToDirection(transform.localPosition, dir);
 		}
 
-		//kill the player if either they fall out of the world, or they hit the ground going too fast
-		if(transform.localPosition.magnitude > 125 || prevVelocity.magnitude - rigidbody.velocity.magnitude > 18)
+		//kill the player if either they fall out of the world
+		if(transform.localPosition.magnitude > 125)
 		{
 			Application.LoadLevel(Application.loadedLevelName);
-		}
-		else
-		{
-			prevVelocity = rigidbody.velocity;
 		}
 	}
 	
