@@ -31,6 +31,7 @@ public class MouseLook : MonoBehaviour {
 	float rotationY = 0F;
 	
 	public Texture2D crosshair;
+	public AudioSource fireSfx;
 
 	void Start ()
 	{
@@ -68,6 +69,8 @@ public class MouseLook : MonoBehaviour {
 		//fire a ray when you click and check to see if it hits a GravCube
 		if(Input.GetMouseButtonDown(0))
 		{
+			fireSfx.Play();
+		
 			Transform camera = Camera.allCameras[0].transform;
 			Ray ray = new Ray(camera.position, camera.forward);
 			RaycastHit hit = new RaycastHit();
