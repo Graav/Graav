@@ -32,8 +32,6 @@ public class GravController : MonoBehaviour
 		//plane, and crossing it with the plane normal
 		if(Input.GetKeyDown(KeyCode.Q)) 
 		{
-			rotatorSfx.Play();
-		
 			Vector3 projForward = projectVectorOntoPlane(planeNormal, transform.forward);
 			Vector3 dir = Vector3.Cross(planeNormal, (projForward.normalized));
 			rotateGravToDirection(transform.localPosition, dir);
@@ -41,9 +39,7 @@ public class GravController : MonoBehaviour
 
 		//rotate gravity to the right
 		if(Input.GetKeyDown(KeyCode.E))
-		{
-			rotatorSfx.Play();
-			
+		{	
 			Vector3 projForward = projectVectorOntoPlane(planeNormal, transform.forward);
 			Vector3 dir = Vector3.Cross(planeNormal, (projForward.normalized) * -1);
 			rotateGravToDirection(transform.localPosition, dir);
@@ -60,6 +56,11 @@ public class GravController : MonoBehaviour
 	//newGrav: a vector defining the new "down" relative to the current down
 	private void rotateGravToDirection(Vector3 origin, Vector3 newGrav)
 	{
+		if(!rotatorSfx.isPlaying)
+		{
+			rotatorSfx.Play();
+		}
+	
 		//iterate through the axis unit vectors and find the closest one to newGrav
 		int closestIndex = 0;
 		float highestDot = -1;
