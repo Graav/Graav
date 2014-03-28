@@ -1,11 +1,24 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Goal : MonoBehaviour
+public class Cover : MonoBehaviour 
 {
+	public bool exitCover;
+	
+	private bool fadingToBlack;
 
-	void Start()
+	// Use this for initialization
+	void Start() 
 	{
+		renderer.material.color = Color.black;
+		fadingToBlack = false;
+		if(exitCover)
+		{
+			Color c = renderer.material.color;
+			c.a = 0.0f;
+			renderer.material.color = c;
+		}
+		
 		Mesh mesh = GetComponent<MeshFilter>().mesh;
 		Vector3[] vertices = mesh.vertices;
 		Vector2[] uv = mesh.uv;
@@ -46,21 +59,37 @@ public class Goal : MonoBehaviour
 		mesh.triangles = newTris; // assign triangles last!
 	}
 	
-	void Update()
+	// Update is called once per frame
+	void FixedUpdate() 
 	{
-		transform.Rotate(new Vector3(0.0f, 10.0f, 0.0f) * Time.deltaTime);
+		if(!exitCover && renderer.material.color.a > 0)
+		{
+			Color c = renderer.material.color;
+			c.a = c.a - 0.01f;
+			renderer.material.color = c;
+			
+			if(renderer.material.color.a <= 0)
+			{
+				collider.isTrigger = true;
+			}
+		}
+		
+		if(exitCover && fadingToBlack && renderer.material.color.a < 1)
+		{
+			Color c = renderer.material.color;
+			c.a = c.a + 0.01f;
+			renderer.material.color = c;
+			
+			if(renderer.material.color.a >= 1)
+			{
+				Application.LoadLevel((Application.loadedLevel + 1) % Application.levelCount);
+			}
+		}
 	}
 	
-	void OnTriggerStay(Collider c)
+	public void triggerFadeOut()
 	{
-		//when the player hits the goal, advance the level and reset the timescale (in case of level 4)
-		if(c.gameObject.name.CompareTo("Player") == 0 && (transform.position - c.gameObject.transform.position).magnitude < 0.25f)
-		{
-			Time.timeScale = 1;
-			Time.fixedDeltaTime = 0.02f;
-			
-			GameObject teleportCover = GameObject.Find("TeleportOut");
-			teleportCover.GetComponent<Cover>().triggerFadeOut();
-		}
+		fadingToBlack = true;
+		collider.isTrigger = false;
 	}
 }

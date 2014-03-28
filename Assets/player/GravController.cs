@@ -44,6 +44,14 @@ public class GravController : MonoBehaviour
 			Vector3 dir = Vector3.Cross(planeNormal, (projForward.normalized) * -1);
 			rotateGravToDirection(transform.localPosition, dir);
 		}
+		
+		//pause functionality
+		if(Input.GetKey(KeyCode.Escape) && Application.loadedLevel != 0)
+		{
+			Time.timeScale = 1;
+			Time.fixedDeltaTime = 0.02f;
+			Application.LoadLevel(0);
+		}
 
 		//kill the player if either they fall out of the world
 		if(transform.localPosition.magnitude > 125)

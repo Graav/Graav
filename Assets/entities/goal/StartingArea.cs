@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Goal : MonoBehaviour
+public class StartingArea : MonoBehaviour
 {
-
+	
 	void Start()
 	{
 		Mesh mesh = GetComponent<MeshFilter>().mesh;
@@ -49,18 +49,5 @@ public class Goal : MonoBehaviour
 	void Update()
 	{
 		transform.Rotate(new Vector3(0.0f, 10.0f, 0.0f) * Time.deltaTime);
-	}
-	
-	void OnTriggerStay(Collider c)
-	{
-		//when the player hits the goal, advance the level and reset the timescale (in case of level 4)
-		if(c.gameObject.name.CompareTo("Player") == 0 && (transform.position - c.gameObject.transform.position).magnitude < 0.25f)
-		{
-			Time.timeScale = 1;
-			Time.fixedDeltaTime = 0.02f;
-			
-			GameObject teleportCover = GameObject.Find("TeleportOut");
-			teleportCover.GetComponent<Cover>().triggerFadeOut();
-		}
 	}
 }

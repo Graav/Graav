@@ -30,14 +30,6 @@ function Update () {
 	// Apply the direction to the CharacterMotor
 	motor.inputMoveDirection = transform.rotation * directionVector;
 	motor.inputJump = Input.GetButton("Jump");
-	
-	//pause functionality
-	if(Input.GetKey(KeyCode.Escape) && Application.loadedLevel != 0)
-	{
-		Time.timeScale = 1;
-		Time.fixedDeltaTime = 0.02f;
-		Application.LoadLevel(0);
-	}
 }
 
 // Require a character controller to be attached to the same game object
