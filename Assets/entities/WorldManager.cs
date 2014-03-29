@@ -17,12 +17,12 @@ public class WorldManager : MonoBehaviour
 	
 	void Update()
 	{
-		if(rotating && rotateTicks < 15)
+		if(rotating && rotateTicks < 30)
 		{
 			rotateTicks++;
 			foreach(Transform child in transform)
 			{
-				child.RotateAround(origin, Vector3.Cross(oldGrav, newGrav), Vector3.Angle (oldGrav, newGrav) / 15);
+				child.RotateAround(origin, Vector3.Cross(oldGrav, newGrav), Vector3.Angle (oldGrav, newGrav) / 30);
 			}
 		}
 		else if(rotating)
