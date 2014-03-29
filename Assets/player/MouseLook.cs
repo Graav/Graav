@@ -92,7 +92,11 @@ public class MouseLook : MonoBehaviour {
 		float xMin = (Screen.width / 2) - (crosshair.width / 2);
 		float yMin = (Screen.height / 2) - (crosshair.height / 2);
 		GUI.DrawTexture(new Rect(xMin, yMin, crosshair.width, crosshair.height), crosshair);
-		GUI.DrawTexture(new Rect(xMin * 1.2f, yMin * 1.25f, blueArrow.width / 10, blueArrow.height / 10), blueArrow);
-		GUI.DrawTexture(new Rect(xMin * 1.08f, yMin * 1.25f, orangeArrow.width / 10, orangeArrow.height / 10), orangeArrow);
+		
+		float xMinArrow = (Screen.width / 2) - (blueArrow.width / 20);
+		float yMinArrow = (Screen.height / 2) - (blueArrow.height / 20);
+		float offset = (crosshair.width / 4);
+		GUI.DrawTexture(new Rect(xMinArrow + offset, yMinArrow, blueArrow.width / 10, blueArrow.height / 10), blueArrow);
+		GUI.DrawTexture(new Rect(xMinArrow - offset, yMinArrow, orangeArrow.width / 10, orangeArrow.height / 10), orangeArrow);
 	}
 }
