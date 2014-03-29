@@ -17,14 +17,19 @@ public class PauseMenu : MonoBehaviour {
 	void OnGUI() {
 		if(isPaused) {
 			GUI.Box(new Rect(0,0,Screen.width,Screen.height), "");
-			if(GUI.Button(new Rect(Screen.width * 0.10f, Screen.height * 0.10f, Screen.width * 0.35f, Screen.height * 0.80f), "Resume")) {
+			if(GUI.Button(new Rect(Screen.width * 0.10f, Screen.height * 0.10f, Screen.width * 0.35f, Screen.height * 0.55f), "Resume")) {
 				togglePause();
 			}
 			
-			if(GUI.Button(new Rect(Screen.width * 0.55f, Screen.height * 0.10f, Screen.width * 0.35f, Screen.height * 0.80f), "Main Menu")) {
+			if(GUI.Button(new Rect(Screen.width * 0.55f, Screen.height * 0.10f, Screen.width * 0.35f, Screen.height * 0.55f), "Main Menu")) {
 				togglePause();
 				Application.LoadLevel(0);	
 			}
+			if(GUI.Button(new Rect(Screen.width * 0.10f, Screen.height * 0.70f, Screen.width * 0.80f, Screen.height * 0.20f), "Restart Level")) {
+				togglePause();
+				Application.LoadLevel(Application.loadedLevel);
+			}
+
 		}
 	}
 
