@@ -3,7 +3,7 @@ using System.Collections;
 
 public class MenuManager : MonoBehaviour
 {
-	public GUIStyle style;
+	public GUISkin guiStyle;
 	public string[] levelNames;							//List of level names
 
 	private string currScreen;							//Current Screen
@@ -24,9 +24,7 @@ public class MenuManager : MonoBehaviour
 	
 	void OnGUI() 
 	{		
-		GUI.skin.button.fontSize = 50;
-
-
+		GUI.skin = guiStyle;
 		switch(currScreen) {
 		case "main": //Main Screen
 			//Level Select
@@ -63,8 +61,8 @@ public class MenuManager : MonoBehaviour
 			break;
 		case "options": //Options Screen
 			//Mouse Sensitivity Slider
-			GUI.Label (new Rect (Screen.width * 0.425f, Screen.height * 0.4f, Screen.width * 0.2f, 25), "Mouse Sensitivity");
-			mouseSensitivityValue = GUI.HorizontalSlider(new Rect(Screen.width * 0.3f, Screen.height * 0.5f, Screen.width * 0.4f, 30), mouseSensitivityValue, 0.25F, 1.0F);
+			GUI.Label (new Rect (Screen.width * 0.41f, Screen.height * 0.4f, Screen.width * 0.2f, 35), "Mouse Sensitivity");
+			mouseSensitivityValue = GUI.HorizontalSlider(new Rect(Screen.width * 0.3f, Screen.height * 0.5f, Screen.width * 0.4f, 30), mouseSensitivityValue, 0.5F, 1.5F);
 
 
 			//Back button

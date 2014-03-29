@@ -16,6 +16,7 @@ public class PauseMenu : MonoBehaviour {
 
 	void OnGUI() {
 		if(isPaused) {
+			GUI.Box(new Rect(0,0,Screen.width,Screen.height), "");
 			if(GUI.Button(new Rect(Screen.width * 0.10f, Screen.height * 0.10f, Screen.width * 0.35f, Screen.height * 0.80f), "Resume")) {
 				togglePause();
 			}
