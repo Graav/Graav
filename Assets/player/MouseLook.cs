@@ -31,6 +31,8 @@ public class MouseLook : MonoBehaviour {
 	float rotationY = 0F;
 	
 	public Texture2D crosshair;
+	public Texture2D blueArrow;
+	public Texture2D orangeArrow;
 	public AudioSource fireSfx;
 
 	void Start ()
@@ -90,5 +92,7 @@ public class MouseLook : MonoBehaviour {
 		float xMin = (Screen.width / 2) - (crosshair.width / 2);
 		float yMin = (Screen.height / 2) - (crosshair.height / 2);
 		GUI.DrawTexture(new Rect(xMin, yMin, crosshair.width, crosshair.height), crosshair);
+		GUI.DrawTexture(new Rect(xMin * 1.2f, yMin * 1.25f, blueArrow.width / 10, blueArrow.height / 10), blueArrow);
+		GUI.DrawTexture(new Rect(xMin * 1.08f, yMin * 1.25f, orangeArrow.width / 10, orangeArrow.height / 10), orangeArrow);
 	}
 }
