@@ -11,6 +11,7 @@ public class MenuManager : MonoBehaviour
 
 	//Options menu values
 	private float mouseSensitivityValue;				//Mouse sensitivity
+	private float volumeValue;							//Volume
 
 	void Start() {
 		Screen.lockCursor = false;
@@ -61,8 +62,12 @@ public class MenuManager : MonoBehaviour
 			break;
 		case "options": //Options Screen
 			//Mouse Sensitivity Slider
-			GUI.Label (new Rect (Screen.width * 0.41f, Screen.height * 0.4f, Screen.width * 0.2f, 35), "Mouse Sensitivity");
-			mouseSensitivityValue = GUI.HorizontalSlider(new Rect(Screen.width * 0.3f, Screen.height * 0.5f, Screen.width * 0.4f, 30), mouseSensitivityValue, 0.5F, 1.5F);
+			GUI.Label (new Rect (Screen.width * 0.41f, Screen.height * 0.2f, Screen.width * 0.2f, 35), "Mouse Sensitivity");
+			mouseSensitivityValue = GUI.HorizontalSlider(new Rect(Screen.width * 0.3f, Screen.height * 0.3f, Screen.width * 0.4f, 30), mouseSensitivityValue, 0.5F, 1.5F);
+
+			//Volume Slider
+			GUI.Label (new Rect (Screen.width * 0.45f, Screen.height * 0.4f, Screen.width * 0.2f, 35), "Volume");
+			volumeValue = GUI.HorizontalSlider(new Rect(Screen.width * 0.3f, Screen.height * 0.5f, Screen.width * 0.4f, 30), volumeValue, 0.0F, 1.0F);
 
 
 			//Back button
@@ -84,10 +89,12 @@ public class MenuManager : MonoBehaviour
 	//Load option values from OptionsContainer
 	private void loadOptions() {
 		mouseSensitivityValue = GameObject.Find ("OptionsManager").GetComponent<OptionsContainer>().mouseSensitivityValue;
+		volumeValue = GameObject.Find ("OptionsManager").GetComponent<OptionsContainer>().volumeValue;
 	}
 	
 	//Save option values from OptionsContainer
 	private void saveOptions() {
 		GameObject.Find ("OptionsManager").GetComponent<OptionsContainer>().mouseSensitivityValue = mouseSensitivityValue;
+		GameObject.Find ("OptionsManager").GetComponent<OptionsContainer>().volumeValue = volumeValue;
 	}
 }
