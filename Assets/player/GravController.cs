@@ -54,7 +54,9 @@ public class GravController : MonoBehaviour
 		}
 
 		//kill the player if either they fall out of the world
-		if(transform.localPosition.magnitude > 125)
+		
+		Transform bounds = GameObject.FindGameObjectWithTag("MapBounds").transform;
+		if(Vector3.Distance(transform.position, bounds.position) > bounds.localScale.x/2)
 		{
 			Application.LoadLevel(Application.loadedLevelName);
 		}
