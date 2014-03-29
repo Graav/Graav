@@ -47,41 +47,43 @@ public class MouseLook : MonoBehaviour {
 
 	void Update ()
 	{
-		if (axes == RotationAxes.MouseXAndY)
-		{
-			float rotationX = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * sensitivityX;
-			
-			rotationY += Input.GetAxis("Mouse Y") * sensitivityY;
-			rotationY = Mathf.Clamp (rotationY, minimumY, maximumY);
-			
-			transform.localEulerAngles = new Vector3(-rotationY, rotationX, 0);
-		}
-		else if (axes == RotationAxes.MouseX)
-		{
-			transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivityX, 0);
-		}
-		else
-		{
-			rotationY += Input.GetAxis("Mouse Y") * sensitivityY;
-			rotationY = Mathf.Clamp (rotationY, minimumY, maximumY);
-			
-			transform.localEulerAngles = new Vector3(-rotationY, transform.localEulerAngles.y, 0);
-		}
-		
-		//fire a ray when you click and check to see if it hits a GravCube
-		if(Input.GetMouseButtonDown(0))
-		{
-			fireSfx.Play();
-		
-			Transform camera = Camera.allCameras[0].transform;
-			Ray ray = new Ray(camera.position, camera.forward);
-			RaycastHit hit = new RaycastHit();
-			
-			if(Physics.Raycast(ray, out hit, 50))
+		if(!GameObject.FindWithTag("MainCamera").GetComponent<PauseMenu>().isPaused) {
+			if (axes == RotationAxes.MouseXAndY)
 			{
-				if(hit.collider.gameObject.GetComponent<GravCube>())
+				float rotationX = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * sensitivityX;
+				
+				rotationY += Input.GetAxis("Mouse Y") * sensitivityY;
+				rotationY = Mathf.Clamp (rotationY, minimumY, maximumY);
+				
+				transform.localEulerAngles = new Vector3(-rotationY, rotationX, 0);
+			}
+			else if (axes == RotationAxes.MouseX)
+			{
+				transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivityX, 0);
+			}
+			else
+			{
+				rotationY += Input.GetAxis("Mouse Y") * sensitivityY;
+				rotationY = Mathf.Clamp (rotationY, minimumY, maximumY);
+				
+				transform.localEulerAngles = new Vector3(-rotationY, transform.localEulerAngles.y, 0);
+			}
+			
+			//fire a ray when you click and check to see if it hits a GravCube
+			if(Input.GetMouseButtonDown(0))
+			{
+				fireSfx.Play();
+			
+				Transform camera = Camera.allCameras[0].transform;
+				Ray ray = new Ray(camera.position, camera.forward);
+				RaycastHit hit = new RaycastHit();
+				
+				if(Physics.Raycast(ray, out hit, 50))
 				{
-					hit.collider.gameObject.GetComponent<GravCube>().toggleGrav();
+					if(hit.collider.gameObject.GetComponent<GravCube>())
+					{
+						hit.collider.gameObject.GetComponent<GravCube>().toggleGrav();
+					}
 				}
 			}
 		}
@@ -92,7 +94,11 @@ public class MouseLook : MonoBehaviour {
 		float xMin = (Screen.width / 2) - (crosshair.width / 2);
 		float yMin = (Screen.height / 2) - (crosshair.height / 2);
 		GUI.DrawTexture(new Rect(xMin, yMin, crosshair.width, crosshair.height), crosshair);
-		GUI.DrawTexture(new Rect(xMin * 1.2f, yMin * 1.25f, blueArrow.width / 10, blueArrow.height / 10), blueArrow);
-		GUI.DrawTexture(new Rect(xMin * 1.08f, yMin * 1.25f, orangeArrow.width / 10, orangeArrow.height / 10), orangeArrow);
+		
+		float xMinArrow = (Screen.width / 2) - (blueArrow.width / 20);
+		float yMinArrow = (Screen.height / 2) - (blueArrow.height / 20);
+		float offset = (crosshair.width / 4);
+		GUI.DrawTexture(new Rect(xMinArrow + offset, yMinArrow, blueArrow.width / 10, blueArrow.height / 10), blueArrow);
+		GUI.DrawTexture(new Rect(xMinArrow - offset, yMinArrow, orangeArrow.width / 10, orangeArrow.height / 10), orangeArrow);
 	}
 }
