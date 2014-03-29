@@ -12,14 +12,13 @@ public class MenuManager : MonoBehaviour
 	//Options menu values
 	private float mouseSensitivityValue;				//Mouse sensitivity
 
-	void Start()
-	{
+	void Start() {
 		Screen.lockCursor = false;
 		currScreen = "main";
+		loadOptions();
 	}
 	
-	void Update()
-	{
+	void Update() {
 		transform.RotateAround(new Vector3(0,0,0), new Vector3(0, 1, 0), -0.3f);
 	}
 	
@@ -57,6 +56,7 @@ public class MenuManager : MonoBehaviour
 
 			//Back button
 			if(GUI.Button(new Rect(Screen.width*0.4f, Screen.height*0.8f, Screen.width*0.2f, Screen.height*0.15f), "Back")) {
+				saveOptions();
 				currScreen = "main";
 			}
 
@@ -64,12 +64,12 @@ public class MenuManager : MonoBehaviour
 		case "options": //Options Screen
 			//Mouse Sensitivity Slider
 			GUI.Label (new Rect (Screen.width * 0.425f, Screen.height * 0.4f, Screen.width * 0.2f, 25), "Mouse Sensitivity");
-			mouseSensitivityValue = GUI.HorizontalSlider(new Rect(Screen.width * 0.3f, Screen.height * 0.5f, Screen.width * 0.4f, 30), mouseSensitivityValue, 0.0F, 1.0F);
+			mouseSensitivityValue = GUI.HorizontalSlider(new Rect(Screen.width * 0.3f, Screen.height * 0.5f, Screen.width * 0.4f, 30), mouseSensitivityValue, 0.25F, 1.0F);
 
 
 			//Back button
 			if(GUI.Button(new Rect(Screen.width*0.4f, Screen.height*0.8f, Screen.width*0.2f, Screen.height*0.15f), "Back")) {
-
+				saveOptions();
 				currScreen = "main";
 			}
 			break;
@@ -83,11 +83,13 @@ public class MenuManager : MonoBehaviour
 		Application.LoadLevel(level);
 	}
 
-	private void saveSettings() {
-
+	//Load option values from OptionsContainer
+	private void loadOptions() {
+		mouseSensitivityValue = GameObject.Find ("OptionsManager").GetComponent<OptionsContainer>().mouseSensitivityValue;
 	}
-
-	private void loadSettings() {
-		
+	
+	//Save option values from OptionsContainer
+	private void saveOptions() {
+		GameObject.Find ("OptionsManager").GetComponent<OptionsContainer>().mouseSensitivityValue = mouseSensitivityValue;
 	}
 }
