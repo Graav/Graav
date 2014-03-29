@@ -60,9 +60,6 @@ public class GravController : MonoBehaviour
 		{
 			Application.LoadLevel(Application.loadedLevelName);
 		}
-		else{
-			Debug.Log (Vector3.Distance(transform.position, bounds.position));
-		}
 	}
 	
 	//origin: the position of the player and the center of world rotation
