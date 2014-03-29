@@ -47,41 +47,43 @@ public class MouseLook : MonoBehaviour {
 
 	void Update ()
 	{
-		if (axes == RotationAxes.MouseXAndY)
-		{
-			float rotationX = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * sensitivityX;
-			
-			rotationY += Input.GetAxis("Mouse Y") * sensitivityY;
-			rotationY = Mathf.Clamp (rotationY, minimumY, maximumY);
-			
-			transform.localEulerAngles = new Vector3(-rotationY, rotationX, 0);
-		}
-		else if (axes == RotationAxes.MouseX)
-		{
-			transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivityX, 0);
-		}
-		else
-		{
-			rotationY += Input.GetAxis("Mouse Y") * sensitivityY;
-			rotationY = Mathf.Clamp (rotationY, minimumY, maximumY);
-			
-			transform.localEulerAngles = new Vector3(-rotationY, transform.localEulerAngles.y, 0);
-		}
-		
-		//fire a ray when you click and check to see if it hits a GravCube
-		if(Input.GetMouseButtonDown(0))
-		{
-			fireSfx.Play();
-		
-			Transform camera = Camera.allCameras[0].transform;
-			Ray ray = new Ray(camera.position, camera.forward);
-			RaycastHit hit = new RaycastHit();
-			
-			if(Physics.Raycast(ray, out hit, 50))
+		if(!GameObject.FindWithTag("MainCamera").GetComponent<PauseMenu>().isPaused) {
+			if (axes == RotationAxes.MouseXAndY)
 			{
-				if(hit.collider.gameObject.GetComponent<GravCube>())
+				float rotationX = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * sensitivityX;
+				
+				rotationY += Input.GetAxis("Mouse Y") * sensitivityY;
+				rotationY = Mathf.Clamp (rotationY, minimumY, maximumY);
+				
+				transform.localEulerAngles = new Vector3(-rotationY, rotationX, 0);
+			}
+			else if (axes == RotationAxes.MouseX)
+			{
+				transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivityX, 0);
+			}
+			else
+			{
+				rotationY += Input.GetAxis("Mouse Y") * sensitivityY;
+				rotationY = Mathf.Clamp (rotationY, minimumY, maximumY);
+				
+				transform.localEulerAngles = new Vector3(-rotationY, transform.localEulerAngles.y, 0);
+			}
+			
+			//fire a ray when you click and check to see if it hits a GravCube
+			if(Input.GetMouseButtonDown(0))
+			{
+				fireSfx.Play();
+			
+				Transform camera = Camera.allCameras[0].transform;
+				Ray ray = new Ray(camera.position, camera.forward);
+				RaycastHit hit = new RaycastHit();
+				
+				if(Physics.Raycast(ray, out hit, 50))
 				{
-					hit.collider.gameObject.GetComponent<GravCube>().toggleGrav();
+					if(hit.collider.gameObject.GetComponent<GravCube>())
+					{
+						hit.collider.gameObject.GetComponent<GravCube>().toggleGrav();
+					}
 				}
 			}
 		}

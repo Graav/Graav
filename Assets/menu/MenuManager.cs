@@ -3,7 +3,7 @@ using System.Collections;
 
 public class MenuManager : MonoBehaviour
 {
-	public GUIStyle style;
+	public GUISkin guiStyle;
 	public string[] levelNames;							//List of level names
 
 	private string currScreen;							//Current Screen
@@ -11,23 +11,21 @@ public class MenuManager : MonoBehaviour
 
 	//Options menu values
 	private float mouseSensitivityValue;				//Mouse sensitivity
+	private float volumeValue;							//Volume
 
-	void Start()
-	{
+	void Start() {
 		Screen.lockCursor = false;
 		currScreen = "main";
+		loadOptions();
 	}
 	
-	void Update()
-	{
+	void Update() {
 		transform.RotateAround(new Vector3(0,0,0), new Vector3(0, 1, 0), -0.3f);
 	}
 	
 	void OnGUI() 
 	{		
-		GUI.skin.button.fontSize = 50;
-
-
+		GUI.skin = guiStyle;
 		switch(currScreen) {
 		case "main": //Main Screen
 			//Level Select
@@ -57,19 +55,24 @@ public class MenuManager : MonoBehaviour
 
 			//Back button
 			if(GUI.Button(new Rect(Screen.width*0.4f, Screen.height*0.8f, Screen.width*0.2f, Screen.height*0.15f), "Back")) {
+				saveOptions();
 				currScreen = "main";
 			}
 
 			break;
 		case "options": //Options Screen
 			//Mouse Sensitivity Slider
-			GUI.Label (new Rect (Screen.width * 0.425f, Screen.height * 0.4f, Screen.width * 0.2f, 25), "Mouse Sensitivity");
-			mouseSensitivityValue = GUI.HorizontalSlider(new Rect(Screen.width * 0.3f, Screen.height * 0.5f, Screen.width * 0.4f, 30), mouseSensitivityValue, 0.0F, 1.0F);
+			GUI.Label (new Rect (Screen.width * 0.41f, Screen.height * 0.2f, Screen.width * 0.2f, 35), "Mouse Sensitivity");
+			mouseSensitivityValue = GUI.HorizontalSlider(new Rect(Screen.width * 0.3f, Screen.height * 0.3f, Screen.width * 0.4f, 30), mouseSensitivityValue, 0.5F, 1.5F);
+
+			//Volume Slider
+			GUI.Label (new Rect (Screen.width * 0.45f, Screen.height * 0.4f, Screen.width * 0.2f, 35), "Volume");
+			volumeValue = GUI.HorizontalSlider(new Rect(Screen.width * 0.3f, Screen.height * 0.5f, Screen.width * 0.4f, 30), volumeValue, 0.0F, 1.0F);
 
 
 			//Back button
 			if(GUI.Button(new Rect(Screen.width*0.4f, Screen.height*0.8f, Screen.width*0.2f, Screen.height*0.15f), "Back")) {
-
+				saveOptions();
 				currScreen = "main";
 			}
 			break;
@@ -83,11 +86,15 @@ public class MenuManager : MonoBehaviour
 		Application.LoadLevel(level);
 	}
 
-	private void saveSettings() {
-
+	//Load option values from OptionsContainer
+	private void loadOptions() {
+		mouseSensitivityValue = GameObject.Find ("OptionsManager").GetComponent<OptionsContainer>().mouseSensitivityValue;
+		volumeValue = GameObject.Find ("OptionsManager").GetComponent<OptionsContainer>().volumeValue;
 	}
-
-	private void loadSettings() {
-		
+	
+	//Save option values from OptionsContainer
+	private void saveOptions() {
+		GameObject.Find ("OptionsManager").GetComponent<OptionsContainer>().mouseSensitivityValue = mouseSensitivityValue;
+		GameObject.Find ("OptionsManager").GetComponent<OptionsContainer>().volumeValue = volumeValue;
 	}
 }

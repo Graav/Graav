@@ -28,33 +28,35 @@ public class GravController : MonoBehaviour
 
 	void Update()
 	{	
-		//rotate gravity to the left by projecting the forward vector onto the movement
-		//plane, and crossing it with the plane normal
-		if(Input.GetKeyDown(KeyCode.Q)) 
-		{
-			Vector3 projForward = projectVectorOntoPlane(planeNormal, transform.forward);
-			Vector3 dir = Vector3.Cross(planeNormal, (projForward.normalized));
-			rotateGravToDirection(transform.localPosition, dir);
-		}
+		if(!GameObject.FindWithTag("MainCamera").GetComponent<PauseMenu>().isPaused) {
+			//rotate gravity to the left by projecting the forward vector onto the movement
+			//plane, and crossing it with the plane normal
+			if(Input.GetKeyDown(KeyCode.Q)) 
+			{
+				Vector3 projForward = projectVectorOntoPlane(planeNormal, transform.forward);
+				Vector3 dir = Vector3.Cross(planeNormal, (projForward.normalized));
+				rotateGravToDirection(transform.localPosition, dir);
+			}
 
-		//rotate gravity to the right
-		if(Input.GetKeyDown(KeyCode.E))
-		{	
-			Vector3 projForward = projectVectorOntoPlane(planeNormal, transform.forward);
-			Vector3 dir = Vector3.Cross(planeNormal, (projForward.normalized) * -1);
-			rotateGravToDirection(transform.localPosition, dir);
+			//rotate gravity to the right
+			if(Input.GetKeyDown(KeyCode.E))
+			{	
+				Vector3 projForward = projectVectorOntoPlane(planeNormal, transform.forward);
+				Vector3 dir = Vector3.Cross(planeNormal, (projForward.normalized) * -1);
+				rotateGravToDirection(transform.localPosition, dir);
+			}
 		}
 		
 		//pause functionality
-		if(Input.GetKey(KeyCode.Escape) && Application.loadedLevel != 0)
+		if(Input.GetKeyDown(KeyCode.Escape) && Application.loadedLevel != 0)
 		{
-			Time.timeScale = 1;
-			Time.fixedDeltaTime = 0.02f;
-			Application.LoadLevel(0);
+			GameObject.FindWithTag("MainCamera").GetComponent<PauseMenu>().togglePause();
 		}
 
 		//kill the player if either they fall out of the world
-		if(transform.localPosition.magnitude > 125)
+		
+		Transform bounds = GameObject.FindGameObjectWithTag("MapBounds").transform;
+		if(Vector3.Distance(transform.position, bounds.position) > bounds.localScale.x/2)
 		{
 			Application.LoadLevel(Application.loadedLevelName);
 		}
