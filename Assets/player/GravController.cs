@@ -47,6 +47,11 @@ public class GravController : MonoBehaviour
 	void Update()
 	{	
 		if(!GameObject.FindWithTag("MainCamera").GetComponent<PauseMenu>().isPaused) {
+			if(this.GetComponent<CharacterController>().isGrounded)
+			{
+				canRotate = true;
+			}
+
 			//rotate gravity to the left by projecting the forward vector onto the movement
 			//plane, and crossing it with the plane normal
 			if(Input.GetKeyDown(KeyCode.Q) && canRotate) 
