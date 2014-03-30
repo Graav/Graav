@@ -20,10 +20,18 @@ public class GravController : MonoBehaviour
 	private Vector3 prevVelocity;
 	
 	public AudioSource rotatorSfx;
+	
+	public float maxSlow = 0.5f;
+	public float slowLength = 5.0f;
+	private float timeSlowed = 0f;
+	private float timeSpeed = 1.0f;
+	private bool speedUp = false;
+	private float fastTickUpdate = 0.02f;
+	private float slowTickUpdate = 0.0001f;
 
 	void Start()
 	{
-
+		CharacterMotor m = GetComponent<CharacterMotor>();
 	}
 
 	void Update()
@@ -60,6 +68,45 @@ public class GravController : MonoBehaviour
 		{
 			Application.LoadLevel(Application.loadedLevelName);
 		}
+		
+		if(Input.GetKeyDown(KeyCode.LeftShift))
+		{	
+			attemptTimeSlow();
+		}
+		else if(timeSpeed != 1.0f)
+		{
+			
+			if(!speedUp)
+			{
+				if(timeSpeed < maxSlow)
+				{
+					Time.timeScale = timeSpeed;
+					timeSpeed -= getCancelSlow() *Time.deltaTime;
+				}
+				else
+				{
+					Time.timeScale = maxSlow;
+					timeSlowed += getCancelSlow() *Time.deltaTime;
+					if(timeSlowed >= slowLength)
+					{
+						timeSpeedUp();
+					}
+				}
+			}
+			else
+			{
+				if(timeSpeed < 1.0f)
+				{
+					Time.timeScale = timeSpeed;
+					timeSpeed += getCancelSlow() * Time.deltaTime;
+				}
+				else
+				{
+					timeSpeed = 1.0f;
+					Time.timeScale = timeSpeed;
+				}
+			}
+		}
 	}
 	
 	//origin: the position of the player and the center of world rotation
@@ -93,5 +140,25 @@ public class GravController : MonoBehaviour
 	private Vector3 projectVectorOntoPlane(Vector3 planeNormal, Vector3 vector)
 	{
 		return vector - (Vector3.Dot (vector, planeNormal) * planeNormal);
+	}
+	
+	private void attemptTimeSlow()
+	{
+		timeSpeed = 1.0f - Time.deltaTime;
+		speedUp = false;
+		Time.fixedDeltaTime = 0.0001f;
+	}
+	
+	private void timeSpeedUp()
+	{
+		timeSpeed = maxSlow;
+		speedUp = true;
+		timeSlowed = 0;
+		Time.fixedDeltaTime = 0.02f;
+	}
+		
+	private float getCancelSlow()
+	{
+		return 1/Time.timeScale;
 	}
 }

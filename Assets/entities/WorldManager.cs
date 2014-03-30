@@ -8,6 +8,7 @@ public class WorldManager : MonoBehaviour
 	private Vector3 origin;
 	private bool rotating;
 	private int rotateTicks;
+	
 
 	void Start()
 	{
@@ -17,12 +18,12 @@ public class WorldManager : MonoBehaviour
 	
 	void Update()
 	{
-		if(rotating && rotateTicks < 30)
+		if(rotating && rotateTicks < 30 )
 		{
 			rotateTicks++;
 			foreach(Transform child in transform)
 			{
-				child.RotateAround(origin, Vector3.Cross(oldGrav, newGrav), Vector3.Angle (oldGrav, newGrav) / 30);
+				child.RotateAround(origin, Vector3.Cross(oldGrav, newGrav), Vector3.Angle (oldGrav, (newGrav) * getCancelSlow())/ 30);
 			}
 		}
 		else if(rotating)
@@ -40,5 +41,10 @@ public class WorldManager : MonoBehaviour
 			newGrav = grav;
 			rotating = true;
 		}
+	}
+	
+	private float getCancelSlow()
+	{
+		return 1/Time.timeScale;
 	}
 }
