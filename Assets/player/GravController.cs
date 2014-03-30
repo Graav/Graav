@@ -21,8 +21,14 @@ public class GravController : MonoBehaviour
 	
 	public AudioSource rotatorSfx;
 	
+	public Texture fullBarTex;
+	public Texture rechargeBarTex;
+	public Texture emptyBarTex;
+	
 	public float maxSlow = 0.5f;
 	public float slowLength = 5.0f;
+	public float rechargeTime = 5.0f;
+	public float rechargeElapsed = 0f;
 	private float timeSlowed = 0f;
 	private float timeSpeed = 1.0f;
 	private bool speedUp = false;
@@ -34,22 +40,17 @@ public class GravController : MonoBehaviour
 	void Start()
 	{
 		CharacterMotor m = GetComponent<CharacterMotor>();
+		
 		canRotate = false;
 	}
 
 	void Update()
 	{	
 		if(!GameObject.FindWithTag("MainCamera").GetComponent<PauseMenu>().isPaused) {
-			if(this.GetComponent<CharacterController>().isGrounded)
-			{
-				canRotate = true;
-			}
-		
 			//rotate gravity to the left by projecting the forward vector onto the movement
 			//plane, and crossing it with the plane normal
 			if(Input.GetKeyDown(KeyCode.Q) && canRotate) 
 			{
-				canRotate = false;
 				Vector3 projForward = projectVectorOntoPlane(planeNormal, transform.forward);
 				Vector3 dir = Vector3.Cross(planeNormal, (projForward.normalized));
 				rotateGravToDirection(transform.localPosition, dir);
@@ -58,7 +59,6 @@ public class GravController : MonoBehaviour
 			//rotate gravity to the right
 			if(Input.GetKeyDown(KeyCode.E) && canRotate)
 			{	
-				canRotate = false;
 				Vector3 projForward = projectVectorOntoPlane(planeNormal, transform.forward);
 				Vector3 dir = Vector3.Cross(planeNormal, (projForward.normalized) * -1);
 				rotateGravToDirection(transform.localPosition, dir);
@@ -114,8 +114,37 @@ public class GravController : MonoBehaviour
 				{
 					timeSpeed = 1.0f;
 					Time.timeScale = timeSpeed;
+					rechargeElapsed = rechargeTime;
 				}
 			}
+		}
+		else if(rechargeElapsed > 0)
+		{
+			rechargeElapsed -= getCancelSlow() * Time.deltaTime;
+		}
+		else
+		{
+			rechargeElapsed = 0;
+		}
+		
+	}
+	
+	void OnGUI()
+	{
+		//display time meter
+		GUI.DrawTexture(new Rect(Screen.width/2 - Screen.width/3f, 10f , Screen.width/1.5f, 30f), emptyBarTex);
+		
+		if(rechargeElapsed > 0)
+		{
+			GUI.DrawTexture(new Rect(Screen.width/2 - Screen.width/3f, 10f , Screen.width/1.5f * (1.0f - (rechargeElapsed / rechargeTime)), 30f), rechargeBarTex);
+		}
+		else if(timeSlowed > 0)
+		{
+			GUI.DrawTexture(new Rect(Screen.width/2f - Screen.width/3f, 10f , (Screen.width/1.5f) * (1.0f - (timeSlowed/slowLength)), 30f), fullBarTex);
+		}
+		else if (rechargeElapsed == 0 && Time.timeScale == 1.0f)
+		{
+			GUI.DrawTexture(new Rect(Screen.width/2f - Screen.width/3f, 10f , Screen.width/1.5f, 30f), fullBarTex);
 		}
 	}
 	
@@ -154,9 +183,16 @@ public class GravController : MonoBehaviour
 	
 	private void attemptTimeSlow()
 	{
-		timeSpeed = 1.0f - Time.deltaTime;
-		speedUp = false;
-		Time.fixedDeltaTime = 0.0001f;
+		if(rechargeElapsed == 0 && Time.timeScale == 1.0f)
+		{
+			timeSpeed = 1.0f - Time.deltaTime;
+			speedUp = false;
+			Time.fixedDeltaTime = 0.0001f;
+		}
+		else if(Time.timeScale == maxSlow)
+		{
+			timeSpeedUp();
+		}
 	}
 	
 	private void timeSpeedUp()
