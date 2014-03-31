@@ -29,13 +29,18 @@ public class MenuManager : MonoBehaviour
 		switch(currScreen) {
 		case "main": //Main Screen
 			//Level Select
-			if(GUI.Button(new Rect(Screen.width*0.3f, Screen.height*0.3f, Screen.width*0.4f, Screen.height*0.2f), "Level Select")) {
+			if(GUI.Button(new Rect(Screen.width*0.3f, Screen.height*0.1f, Screen.width*0.4f, Screen.height*0.2f), "Level Select")) {
 				currScreen = "levelSelect";
 			}
 
 			//Options
-			if(GUI.Button(new Rect(Screen.width*0.3f, Screen.height*0.6f, Screen.width*0.4f, Screen.height*0.2f), "Options")) {
+			if(GUI.Button(new Rect(Screen.width*0.3f, Screen.height*0.4f, Screen.width*0.4f, Screen.height*0.2f), "Options")) {
 				currScreen = "options";
+			}
+
+			//Exit
+			if(GUI.Button(new Rect(Screen.width*0.3f, Screen.height*0.7f, Screen.width*0.4f, Screen.height*0.2f), "Exit")) {
+				currScreen = "exit";
 			}
 
 			break;
@@ -76,7 +81,21 @@ public class MenuManager : MonoBehaviour
 				currScreen = "main";
 			}
 			break;
+
+		case "exit":
+			GUI.Label (new Rect (Screen.width * 0.41f, Screen.height * 0.2f, Screen.width * 0.2f, 50), "Are you sure you want to leave?");
+			//Back button
+			if(GUI.Button(new Rect(Screen.width*0.2f, Screen.height*0.65f, Screen.width*0.2f, Screen.height*0.15f), "Back")) {
+				saveOptions();
+				currScreen = "main";
+			}
+			//Leave button
+			if(GUI.Button(new Rect(Screen.width*0.6f, Screen.height*0.65f, Screen.width*0.2f, Screen.height*0.15f), "Exit")) {
+				Application.Quit();
+			}
+			break;
 		}
+
 
 	}
 
