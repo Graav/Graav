@@ -135,19 +135,19 @@ public class GravController : MonoBehaviour
 	void OnGUI()
 	{
 		//display time meter
-		GUI.DrawTexture(new Rect(Screen.width/2 - Screen.width/3f, 10f , Screen.width/1.5f, 30f), emptyBarTex);
+		GUI.DrawTexture(new Rect(10f, Screen.height - 25f, Screen.width/5f, 10f), emptyBarTex);
 		
 		if(rechargeElapsed > 0)
 		{
-			GUI.DrawTexture(new Rect(Screen.width/2 - Screen.width/3f, 10f , Screen.width/1.5f * (1.0f - (rechargeElapsed / rechargeTime)), 30f), rechargeBarTex);
+			GUI.DrawTexture(new Rect(10f, Screen.height - 25f, Screen.width/5f * (1.0f - (rechargeElapsed / rechargeTime)), 10f), rechargeBarTex);
 		}
 		else if(timeSlowed > 0)
 		{
-			GUI.DrawTexture(new Rect(Screen.width/2f - Screen.width/3f, 10f , (Screen.width/1.5f) * (1.0f - (timeSlowed/slowLength)), 30f), fullBarTex);
+			GUI.DrawTexture(new Rect(10f, Screen.height - 25f, (Screen.width/5f) * (1.0f - (timeSlowed/slowLength)), 10f), fullBarTex);
 		}
 		else if (rechargeElapsed == 0 && Time.timeScale == 1.0f)
 		{
-			GUI.DrawTexture(new Rect(Screen.width/2f - Screen.width/3f, 10f , Screen.width/1.5f, 30f), fullBarTex);
+			GUI.DrawTexture(new Rect(10f, Screen.height - 25f, Screen.width/5f, 10f), fullBarTex);
 		}
 	}
 	
