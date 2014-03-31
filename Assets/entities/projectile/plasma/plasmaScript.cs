@@ -69,10 +69,7 @@ public class plasmaScript : MonoBehaviour
 		
 		if(Vector3.Distance(player.transform.position, transform.position) <= GetComponent<SphereCollider>().radius * 2)
 		{
-			GameObject.FindGameObjectWithTag("Start").GetComponent<Cover>().triggerFadeOut();
-			player.transform.position = new Vector3(0, 1, 0);
-			GameObject.FindGameObjectWithTag("Start").GetComponent<Cover>().collider.isTrigger = false;
-			wallElapsedTime = wallUpTime - Time.deltaTime;
+			Application.LoadLevel(Application.loadedLevelName);
 		}
 		
 		//if we need to fade, fade
