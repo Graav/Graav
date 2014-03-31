@@ -32,15 +32,11 @@ public class GravController : MonoBehaviour
 	private float timeSlowed = 0f;
 	private float timeSpeed = 1.0f;
 	private bool speedUp = false;
-	private float fastTickUpdate = 0.02f;
-	private float slowTickUpdate = 0.0001f;
-	
+
 	private bool canRotate;
 
 	void Start()
-	{
-		CharacterMotor m = GetComponent<CharacterMotor>();
-		
+	{	
 		canRotate = false;
 	}
 
@@ -56,6 +52,7 @@ public class GravController : MonoBehaviour
 			//plane, and crossing it with the plane normal
 			if(Input.GetKeyDown(KeyCode.Q) && canRotate) 
 			{
+				canRotate = false;
 				Vector3 projForward = projectVectorOntoPlane(planeNormal, transform.forward);
 				Vector3 dir = Vector3.Cross(planeNormal, (projForward.normalized));
 				rotateGravToDirection(transform.localPosition, dir);
@@ -64,6 +61,7 @@ public class GravController : MonoBehaviour
 			//rotate gravity to the right
 			if(Input.GetKeyDown(KeyCode.E) && canRotate)
 			{	
+				canRotate = false;
 				Vector3 projForward = projectVectorOntoPlane(planeNormal, transform.forward);
 				Vector3 dir = Vector3.Cross(planeNormal, (projForward.normalized) * -1);
 				rotateGravToDirection(transform.localPosition, dir);
