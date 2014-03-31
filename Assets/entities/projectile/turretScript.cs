@@ -15,6 +15,11 @@ public class turretScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{
+		if(woldManager == null)
+		{
+			woldManager = GameObject.Find("WorldManager").transform;
+		}
+		
 		if(delayTimes.Length == 0)
 		{
 			delayTimes = new float[1];
@@ -22,6 +27,7 @@ public class turretScript : MonoBehaviour {
 		}
 		
 		firePlasma();
+		
 		
 	}
 	
@@ -33,10 +39,6 @@ public class turretScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
 	{
-		if(woldManager == null)
-		{
-			woldManager = GameObject.Find("WorldManager").transform;
-		}
 		
 		if(timeUntillFire  != float.MaxValue && timeUntillFire > 0)
 		{
