@@ -66,70 +66,69 @@ public class GravController : MonoBehaviour
 				Vector3 dir = Vector3.Cross(planeNormal, (projForward.normalized) * -1);
 				rotateGravToDirection(transform.localPosition, dir);
 			}
-		}
 		
-		//pause functionality
-		if(Input.GetKeyDown(KeyCode.Escape) && Application.loadedLevel != 0)
-		{
-			GameObject.FindWithTag("MainCamera").GetComponent<PauseMenu>().togglePause();
-		}
-
-		//kill the player if either they fall out of the world
-		
-		Transform bounds = GameObject.FindGameObjectWithTag("MapBounds").transform;
-		if(Vector3.Distance(transform.position, bounds.position) > bounds.localScale.x/2)
-		{
-			Application.LoadLevel(Application.loadedLevelName);
-		}
-		
-		if(Input.GetKeyDown(KeyCode.LeftShift))
-		{	
-			attemptTimeSlow();
-		}
-		else if(timeSpeed != 1.0f)
-		{
-			
-			if(!speedUp)
+			//pause functionality
+			if(Input.GetKeyDown(KeyCode.Escape) && Application.loadedLevel != 0)
 			{
-				if(timeSpeed < maxSlow)
+				GameObject.FindWithTag("MainCamera").GetComponent<PauseMenu>().togglePause();
+			}
+	
+			//kill the player if either they fall out of the world
+			
+			Transform bounds = GameObject.FindGameObjectWithTag("MapBounds").transform;
+			if(Vector3.Distance(transform.position, bounds.position) > bounds.localScale.x/2)
+			{
+				Application.LoadLevel(Application.loadedLevelName);
+			}
+			
+			if(Input.GetKeyDown(KeyCode.LeftShift))
+			{	
+				attemptTimeSlow();
+			}
+			else if(timeSpeed != 1.0f)
+			{
+				
+				if(!speedUp)
 				{
-					Time.timeScale = timeSpeed;
-					timeSpeed -= getCancelSlow() *Time.deltaTime;
+					if(timeSpeed < maxSlow)
+					{
+						Time.timeScale = timeSpeed;
+						timeSpeed -= getCancelSlow() *Time.deltaTime;
+					}
+					else
+					{
+						Time.timeScale = maxSlow;
+						timeSlowed += getCancelSlow() *Time.deltaTime;
+						if(timeSlowed >= slowLength)
+						{
+							timeSpeedUp();
+						}
+					}
 				}
 				else
 				{
-					Time.timeScale = maxSlow;
-					timeSlowed += getCancelSlow() *Time.deltaTime;
-					if(timeSlowed >= slowLength)
+					if(timeSpeed < 1.0f)
 					{
-						timeSpeedUp();
+						Time.timeScale = timeSpeed;
+						timeSpeed += getCancelSlow() * Time.deltaTime;
+					}
+					else
+					{
+						timeSpeed = 1.0f;
+						Time.timeScale = timeSpeed;
+						rechargeElapsed = rechargeTime;
 					}
 				}
 			}
+			else if(rechargeElapsed > 0)
+			{
+				rechargeElapsed -= getCancelSlow() * Time.deltaTime;
+			}
 			else
 			{
-				if(timeSpeed < 1.0f)
-				{
-					Time.timeScale = timeSpeed;
-					timeSpeed += getCancelSlow() * Time.deltaTime;
-				}
-				else
-				{
-					timeSpeed = 1.0f;
-					Time.timeScale = timeSpeed;
-					rechargeElapsed = rechargeTime;
-				}
+				rechargeElapsed = 0;
 			}
 		}
-		else if(rechargeElapsed > 0)
-		{
-			rechargeElapsed -= getCancelSlow() * Time.deltaTime;
-		}
-		else
-		{
-			rechargeElapsed = 0;
-		}
-		
 	}
 	
 	void OnGUI()
