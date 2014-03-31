@@ -3,7 +3,7 @@ using System.Collections;
 
 public class turretScript : MonoBehaviour {
 	public Transform plasmaPrefab;
-	public Transform woldManager;
+	private Transform woldManager;
 	
 	
 	//counter for next turret fire
@@ -33,6 +33,11 @@ public class turretScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
 	{
+		if(woldManager == null)
+		{
+			woldManager = GameObject.Find("WorldManager").transform;
+		}
+		
 		if(timeUntillFire  != float.MaxValue && timeUntillFire > 0)
 		{
 			timeUntillFire -= Time.deltaTime;
@@ -53,6 +58,6 @@ public class turretScript : MonoBehaviour {
 		Transform proj = (Transform)Instantiate(plasmaPrefab);		
 		proj.parent = woldManager;
 		proj.position = transform.position;
-		proj.GetComponent<plasmaScript>().forwardDir = transform.localRotation;
+		proj.GetComponent<plasmaScript>().cannon = gameObject;
 	}
 }

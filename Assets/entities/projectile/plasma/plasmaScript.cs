@@ -7,7 +7,7 @@ public class plasmaScript : MonoBehaviour
 	public float rotSpeed = 1.0f;
 	public Quaternion forwardDir;
 	
-	private Vector3 worldRot;
+	public GameObject cannon;
 	
 	//timers for reseting the player
 	private float wallElapsedTime = 0.5f;
@@ -49,20 +49,8 @@ public class plasmaScript : MonoBehaviour
 			}
 		}
 				
-		Vector3 force;
-		if(worldRot != transform.rotation.eulerAngles)
-		{
-			Quaternion diff = transform.rotation * Quaternion.Inverse(Quaternion.Euler(worldRot));
-			forwardDir = diff * forwardDir;
-			force = (forwardDir * Vector3.up).normalized;
-		}
-		else
-		{
-			force = (forwardDir * Vector3.up).normalized;
-		}
-		transform.localPosition += force * moveSpeed * Time.deltaTime;
+		transform.localPosition += cannon.transform.up * moveSpeed * Time.deltaTime;
 		transform.Rotate(Vector3.one * rotSpeed * Time.deltaTime);
-		worldRot = transform.rotation.eulerAngles; 
 		
 		//check if we are intersecting player
 		GameObject player = GameObject.FindGameObjectWithTag("Player");
