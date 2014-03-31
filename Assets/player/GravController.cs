@@ -190,7 +190,7 @@ public class GravController : MonoBehaviour
 		{
 			timeSpeed = 1.0f - Time.deltaTime;
 			speedUp = false;
-			Time.fixedDeltaTime = 0.0001f;
+			Time.fixedDeltaTime = Time.fixedDeltaTime *Time.timeScale;
 		}
 		else if(Time.timeScale == maxSlow)
 		{
@@ -203,7 +203,7 @@ public class GravController : MonoBehaviour
 		timeSpeed = maxSlow;
 		speedUp = true;
 		timeSlowed = 0;
-		Time.fixedDeltaTime = 0.02f;
+		Time.fixedDeltaTime = Time.fixedDeltaTime *Time.timeScale;
 	}
 		
 	private float getCancelSlow()
