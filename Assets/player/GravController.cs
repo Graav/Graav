@@ -38,6 +38,7 @@ public class GravController : MonoBehaviour
 	void Start()
 	{	
 		canRotate = false;
+		Time.timeScale = 1.0f;
 	}
 
 	void Update()
