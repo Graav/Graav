@@ -12,8 +12,12 @@ public class OptionsContainer : MonoBehaviour {
 		if(Instance) {
 			DestroyImmediate(gameObject);
 		} else {
-			DontDestroyOnLoad(gameObject);
+			DontDestroyOnLoad(this);
 			Instance = this;
 		}
+	}
+
+	void Update () {
+		AudioListener.volume = volumeValue;
 	}
 }

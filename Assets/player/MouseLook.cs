@@ -19,6 +19,7 @@ public class MouseLook : MonoBehaviour {
 
 	public enum RotationAxes { MouseXAndY = 0, MouseX = 1, MouseY = 2 }
 	public RotationAxes axes = RotationAxes.MouseXAndY;
+	public float mouseOption;
 	public float sensitivityX = 15F;
 	public float sensitivityY = 15F;
 
@@ -37,6 +38,11 @@ public class MouseLook : MonoBehaviour {
 
 	void Start ()
 	{
+		//Set Mouse Sensitivity
+		mouseOption = GameObject.FindGameObjectWithTag("OptionsManager").GetComponent<OptionsContainer>().mouseSensitivityValue;
+		sensitivityX = mouseOption * 15F;
+		sensitivityY = mouseOption *15F;
+
 		// Make the rigid body not change rotation
 		if (rigidbody)
 			rigidbody.freezeRotation = true;
